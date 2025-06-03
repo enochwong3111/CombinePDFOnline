@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" class="h-100 bg-white">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Combine PDF</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/jquery-ui.min.css" integrity="sha512-TFee0335YRJoyiqz8hA8KV3P0tXa5CpRBSoM0Wnkn7JoJx1kaq1yXL/rb8YFpWXkMOjRcv5txv+C6UluttluCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="./css/main.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/JobItem.js"></script>
+    <script src="./js/JobItemJqObject.js"></script>
+    <script src="./js/main.js"></script>
+</head>
+
+<body class="p-3 m-0 border-0 bd-example">
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+        <symbol id="check-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+        </symbol>
+        <symbol id="info-fill" viewBox="0 0 16 16">
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+        </symbol>
+        <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+        </symbol>
+    </svg>
+
+    <div class="mb-3">
+        <h4>PDF combine (ver 0.1)</h4>
+
+        <div class="btn-panel m-2">
+            <div class="btn-sub-panel">
+                <button type="button" class="btn btn-light" btn-for="selectAll" disabled>Select All</button>
+                <button type="button" class="btn btn-light" btn-for="emptySelect">Empty Selection</button>
+            </div>
+            <div class="btn-sub-panel float-end">
+                <button type="button" class="btn btn-primary" btn-for="chooseFile">Add File(s)</button>
+                <button type="button" class="btn btn-warning" btn-for="removeSelected" disabled>Remove selected</button>
+                <button type="button" class="btn btn-danger" btn-for="clear" disabled>Remove All</button>
+                <button type="button" class="btn btn-success" btn-for="combine" disabled>Combine</button>
+            </div>
+        </div>
+
+        <input type="file" data-for="fileInput" class="d-none" multiple accept=".pdf">
+
+        <div class="empty-list list-group bg-secondary-subtle" data-for="emptyFileList">
+            <p class="link-primary" btn-for="chooseFile">Choose File(s) to combine</p>
+        </div>
+
+        <div class="file-list list-group" data-for="docList">
+            <a class="list-group-item list-group-item-action" aria-current="true" data-for="dummyItem">
+                <div class="row">
+                    <div class="col-s align-self-md-center">
+                        <input class="form-check-input" type="checkbox" name="selectionBox">
+                    </div>
+                    <div class="col-s align-self-md-center">
+                        <i class="bi bi-eye-fill fs-3" btn-for="previewFile" data-bs-toggle="modal"
+                            data-bs-target="#previewPDFModal"></i>
+                        <i class="bi bi-eye-slash-fill fs-3" btn-for="previewLargeFile" title="File too large!"></i>
+                    </div>
+                    <div class="col-l">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1 text-break" data-for="fileName">File name</h5>
+                            <small data-for="fileSize">file size</small>
+                        </div>
+                        <p class="mb-1 page-cnt">Number of pages: <b data-for="pageCnt">xxx</b></p>
+                        <!-- <small>And some small print.</small> -->
+                    </div>
+                    <div class="col-s align-self-md-center">
+                        <i class="bi bi-gear fs-3" btn-for="setting" data-bs-toggle="modal"
+                            data-bs-target="#modalFileSetting"></i>
+                        <span class="position-absolute mt-1 translate-middle badge rounded-pill bg-success"
+                            data-for="badge">
+                            <span class="comment-count" title="2 pages" data-for="pageUsed">2</span>
+                            <span class="visually-hidden">pages</span>
+                        </span>
+                    </div>
+                    <div class="col-s align-self-md-center">
+                        <i class="bi bi-copy fs-3" btn-for="copyFile"></i>
+                    </div>
+                    <div class="col-s align-self-md-center">
+                        <i class="bi bi-trash fs-3" btn-for="removeFile"></i>
+                    </div>
+                    <div class="col-s align-self-md-center">
+                        <i class="bi bi-arrows-vertical fs-3" btn-for="reorderFile"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalFileSetting" tabindex="-1" aria-labelledby="modalFileSettingLabel"
+        data-bs-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalFileSettingLabel">Select pages to combine</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="pagesInput" class="col-form-label">Page: (e.g. 1, 5-9)</label>
+                        <textarea class="form-control" id="pagesInput"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" btn-for="confirmItemSetting">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="previewPDFModal" class="modal fade" tabindex="-1" aria-labelledby="previewPDFModalLabel"
+        data-bs-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="previewPDFModalLabel">PDF preview</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="PDFPreview" style="width: 100%; height: 100%;"></iframe>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-danger d-flex align-items-center alert-dismissible fade mt-3" role="alert" data-for="alert">
+        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
+        <div data-for="errMsg">error msg</div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div id="loadingBg" class="loading-bg">
+        <div class="loading-spinner spinner-border text-light" role="status">
+        </div>
+    </div>
+</body>
+
+</html>
