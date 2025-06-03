@@ -1,37 +1,46 @@
 # PDF Combine Web Tool
 
-一個輕量級的前端 PDF 合併工具，使用 `pdf-lib`、`jQuery` 與 `Bootstrap` 實現多檔 PDF 的預覽、頁面選擇、排序與合併下載。
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/enochwong3111/CombinePDFOnline/blob/main/README.md)
+[![tc](https://img.shields.io/badge/lang-tc-blue.svg)](https://github.com/enochwong3111/CombinePDFOnline/blob/main/README.tc.md)
 
-## 功能
+A lightweight client-side PDF merging tool built with `pdf-lib`, `jQuery`, and `Bootstrap`. It supports multi-file selection, custom page range specification, drag-and-drop ordering, and combined PDF download.
 
-- 多檔案選取與列表顯示（檔名、大小、頁數）
-- 檔案預覽（內嵌 `iframe`），大檔以提示代替
-- 自訂頁碼範圍合併（例如 `1,3-5`）
-- 拖放排序合併順序
-- 一鍵合併並下載結果
+## Features
 
-## 技術棧
+- Multi-file selection and listing (filename, size, page count)
+- PDF preview with an embedded iframe; large files display a warning
+- Customizable page range merging (e.g., `1, 3-5`)
+- Drag-and-drop ordering of PDF files
+- Single-click merging and downloading of the combined PDF
 
-- HTML5 + CSS3（`Bootstrap 5`）
-- `jQuery` + `jQuery UI`（拖放排序）
-- `pdf-lib`（前端 PDF 操作）
-- 模組化自訂：`utils.js`、`JobItem.js`、`JobItemJqObject.js`、`main.js`
+## Technology Stack
 
-## 專案結構
+- HTML5 & CSS3 (`Bootstrap 5`)
+- `jQuery` & `jQuery UI` (sortable)
+- `pdf-lib` for front-end PDF manipulation
+- Modular code: `constants.js`, `utils.js`, `JobItem.js`, `JobItemJqObject.js`, `main.js`
+
+## Directory Structure
 
 ```
 .
-├─ index.html
-├─ css/
-│  ├─ main.css
-├─ js/
-│  ├─ utils.js
-│  ├─ JobItem.js
-│  ├─ JobItemJqObject.js
-└  └─ main.js
+├── index.html
+├── css/
+│   └── main.css
+├── js/
+│   ├── constants.js
+│   ├── utils.js
+│   ├── JobItem.js
+│   ├── JobItemJqObject.js
+│   └── main.js
+└── .cursor/
+    └── rules/
 ```
 
-## 使用
+## Usage
 
-1. 開啟：<a href="https://enochwong3111.github.io/CombinePDFOnline/" target="_blank">Link</a>
-2. 點擊「Add File(s)」選取 PDF，設定頁碼與順序後，按「Combine」下載
+1. Open the web application at:
+   https://enochwong3111.github.io/CombinePDFOnline/
+2. Click **Add File(s)** to select PDF documents.
+3. Adjust page ranges and file order as needed.
+4. Click **Combine** to generate and download the merged PDF.
