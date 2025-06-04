@@ -32,9 +32,7 @@ A lightweight client-side PDF merging tool built with `pdf-lib`, `jQuery`, and `
 │   ├── utils.js
 │   ├── JobItem.js
 │   ├── JobItemJqObject.js
-│   └── main.js
-└── .cursor/
-    └── rules/
+└── └── main.js
 ```
 
 ## Usage
