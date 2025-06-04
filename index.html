@@ -35,7 +35,11 @@
     </svg>
 
     <div class="mb-3">
-        <h4>PDF combine (ver 0.1) <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#helpModal"><i class="bi bi-question-circle" title="Help"></i></button></h4>
+        <h4>
+            PDF combine (ver 0.1) 
+            <button type="button" class="btn btn-link p-1" data-bs-toggle="modal" data-bs-target="#helpModal"><i class="bi bi-question-circle" title="Help"></i></button> 
+            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#supportModal"><i class="bi bi-cup-hot" title="Support"></i></button>
+        </h4>
 
         <div class="btn-panel m-2">
             <div class="btn-sub-panel">
@@ -186,6 +190,24 @@
 
     <div id="loadingBg" class="loading-bg">
         <div class="loading-spinner spinner-border text-light" role="status">
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div class="modal fade" id="supportModal" tabindex="-1" aria-labelledby="supportModalLabel" data-bs-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="supportModalLabel">Support</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>If you like this tool, you can support me via <a href="https://buymeacoffee.com/enochwong" target="_blank">Buy me a coffee</a>.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>
