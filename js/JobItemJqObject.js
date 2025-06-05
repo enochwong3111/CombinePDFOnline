@@ -33,16 +33,20 @@
             e.stopPropagation();
             if(callbacks.onSelect) callbacks.onSelect(self.jobItem.id, $(this).prop('checked'));
         });
-        this.$checkbox.off('click').on('click', function(e){
-            e.stopPropagation();
-            JobItemList.clearLastSelectionState();
-            self.$el.toggleClass('clicked');
-        });
         this.$el.off('click').on('click', function(e){
             e.stopPropagation();
+            if (e.target == self.$settingBtn[0]) {
+                return;
+            }
+            let lastClickedItemId = JobItemList.getLastClickedItemId();
+            if (e.shiftKey && lastClickedItemId) {
+                JobItemList.selectRange(lastClickedItemId, self.jobItem.id);
+            }
+            else if (e.target != self.$checkbox[0]) {
+                self.$checkbox.prop('checked', !self.$checkbox.prop('checked'));
+            }
             JobItemList.clearLastSelectionState();
             self.$el.toggleClass('clicked');
-            self.$checkbox.prop('checked', !self.$checkbox.prop('checked'));
             if(callbacks.onItemClick) callbacks.onItemClick(self.jobItem.id);
         });
         this.$previewBtn.off().on('click', function(e){

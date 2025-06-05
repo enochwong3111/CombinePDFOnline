@@ -346,6 +346,32 @@ window.JobItemList = {};
         console.log(files);
     }
     panel.printFiles = printFiles;
+
+    /**
+     * Select a range of items between two IDs inclusive
+     */
+    function selectRange(fromId, toId) {
+        let fromIdx = jobItemSeq.indexOf(fromId);
+        let toIdx = jobItemSeq.indexOf(toId);
+        if (fromIdx === -1 || toIdx === -1) return;
+        let start = Math.min(fromIdx, toIdx);
+        let end = Math.max(fromIdx, toIdx);
+        for (let i = start; i <= end; i++) {
+            let id = jobItemSeq[i];
+            jobItemViews[id].setSelected(true);
+        }
+        checkSelected();
+    }
+    panel.selectRange = selectRange;
+
+    function getLastClickedItemId() {
+        let lastClickedItem = docList.find('.clicked');
+        if (lastClickedItem.length) {
+            return lastClickedItem.attr('data-id');
+        }
+        return null;
+    }
+    panel.getLastClickedItemId = getLastClickedItemId;
 }(JobItemList));
 
 $(function() {
