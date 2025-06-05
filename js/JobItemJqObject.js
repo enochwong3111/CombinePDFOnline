@@ -39,7 +39,11 @@
                 return;
             }
             let lastClickedItemId = JobItemList.getLastClickedItemId();
-            if (e.shiftKey && lastClickedItemId) {
+            if (e.shiftKey && lastClickedItemId && lastClickedItemId != self.jobItem.id) {
+                if (e.target === self.$checkbox[0]) {
+                    // if the checkbox is clicked, revert the checkbox state before selectting range
+                    self.$checkbox.prop('checked', !self.$checkbox.prop('checked'));
+                }
                 JobItemList.selectRange(lastClickedItemId, self.jobItem.id);
             }
             else if (e.target != self.$checkbox[0]) {
