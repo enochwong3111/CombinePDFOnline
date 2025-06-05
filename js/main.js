@@ -356,9 +356,21 @@ window.JobItemList = {};
         if (fromIdx === -1 || toIdx === -1) return;
         let start = Math.min(fromIdx, toIdx);
         let end = Math.max(fromIdx, toIdx);
+        
+        // 檢查範圍內所有項目是否都已選取
+        let allSelected = true;
         for (let i = start; i <= end; i++) {
             let id = jobItemSeq[i];
-            jobItemViews[id].setSelected(true);
+            if (!jobItemViews[id].isSelected()) {
+                allSelected = false;
+                break;
+            }
+        }
+        
+        // 根據檢查結果決定選取或取消選取
+        for (let i = start; i <= end; i++) {
+            let id = jobItemSeq[i];
+            jobItemViews[id].setSelected(!allSelected);
         }
         checkSelected();
     }
