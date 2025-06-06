@@ -8,9 +8,11 @@ A lightweight client-side PDF merging tool built with `pdf-lib`, `jQuery`, and `
 ## Features
 
 - Multi-file selection and listing (filename, size, page count)
+- Shift+Click range selection for multi-select
+- Drag & drop PDF files onto the list to add
+- Drag-and-drop ordering of PDF files
 - PDF preview with an embedded iframe; large files display a warning
 - Customizable page range merging (e.g., `1, 3-5`)
-- Drag-and-drop ordering of PDF files
 - Single-click merging and downloading of the combined PDF
 
 ## Technology Stack
@@ -39,6 +41,6 @@ A lightweight client-side PDF merging tool built with `pdf-lib`, `jQuery`, and `
 
 1. Open the web application at:
    https://enochwong3111.github.io/CombinePDFOnline/
-2. Click **Add File(s)** to select PDF documents.
-3. Adjust page ranges and file order as needed.
+2. Click **Add File(s)** or drag & drop PDF files onto the list.
+3. Adjust page ranges, use Shift+Click to select ranges, and drag-and-drop to reorder files.
 4. Click **Combine** to generate and download the merged PDF.

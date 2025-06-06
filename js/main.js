@@ -17,6 +17,8 @@ window.JobItemList = {};
         FILE: '_f_',
         ITEM: '_i_'
     }
+    // flag to track pointer over drop-area
+    let isOverDropArea = false;
     
     function init() {
         docList = $('[data-for="docList"]');
@@ -61,6 +63,100 @@ window.JobItemList = {};
             });
             clearLastSelectionState();
             checkSelected();
+        });
+
+        emptyList.off('dragover').on('dragover', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            let content = emptyList.find('.empty-list-content');
+            content.removeClass('empty-list-content link-primary').addClass('drop-area');
+        });
+
+        emptyList.off('dragleave').on('dragleave', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            let content = emptyList.find('.drop-area');
+            content.removeClass('drop-area').addClass('empty-list-content link-primary');
+        });
+
+        emptyList.off('drop').on('drop', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            let content = emptyList.find('.drop-area');
+            content.removeClass('drop-area').addClass('empty-list-content link-primary');
+            let droppedFiles = e.originalEvent.dataTransfer.files;
+            let hasInvalidFile = false;
+            
+            for (let file of droppedFiles) {
+                if (!file.name.toLowerCase().endsWith('.pdf')) {
+                    hasInvalidFile = true;
+                    break;
+                }
+            }
+
+            if (hasInvalidFile) {
+                showAlert('Please drop PDF files only!');
+                return;
+            }
+
+            fileInput[0].files = droppedFiles;
+            fileInput.trigger('change');
+        });
+
+        // Handle drag & drop on existing file list
+        docList.off('dragover').on('dragover', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (!docList.find('.drop-area').length) {
+                docList.prepend('<div class="drop-area"></div>');
+                docList.find('.list-group-item').hide();
+                isOverDropArea = true;
+                // bind drop-area events to maintain flag
+                let da = docList.find('.drop-area');
+                da.off('dragover').on('dragover', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    isOverDropArea = true;
+                });
+                da.off('dragleave').on('dragleave', function(e) {
+                    isOverDropArea = false;
+                });
+            }
+        });
+
+        docList.off('dragleave').on('dragleave', function(e) {
+            // only trigger when not over drop-area
+            if (isOverDropArea) return;
+            e.stopPropagation();
+            e.preventDefault();
+            if (docList.find('.drop-area').length) {
+                docList.find('.drop-area').remove();
+                docList.find('.list-group-item').show();
+                isOverDropArea = false;
+            }
+        });
+
+        docList.off('drop').on('drop', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (docList.find('.drop-area').length) {
+                docList.find('.drop-area').remove();
+                docList.find('.list-group-item').show();
+            }
+            let droppedFiles = e.originalEvent.dataTransfer.files;
+            let hasInvalidFile = false;
+            for (let file of droppedFiles) {
+                if (!file.name.toLowerCase().endsWith('.pdf')) {
+                    hasInvalidFile = true;
+                    break;
+                }
+            }
+            if (hasInvalidFile) {
+                showAlert('Please drop PDF files only!');
+                return;
+            }
+            fileInput[0].files = droppedFiles;
+            fileInput.trigger('change');
         });
 
         buttons.chooseFile.off('click').click(function(e) {

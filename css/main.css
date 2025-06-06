@@ -62,16 +62,6 @@
     color: var(--bs-blue);
 }
 
-.empty-list p {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    width: fit-content;
-    font-size: xxx-large;
-    cursor: pointer;
-    translate: -50% -50%;
-}
-
 .file-list .bi.bi-arrows-vertical {
     /* position: relative;
     left: calc(50% - 1rem); */
@@ -118,4 +108,34 @@
     height: 1em;
     vertical-align: -0.125em;
     fill: currentcolor;
+}
+
+.drop-area, .empty-list-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: xxx-large;
+  }
+
+/* Drop area style */
+.drop-area {
+  border: 2px dashed var(--bs-blue);
+  color: var(--bs-blue);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.drop-area::after {
+    content: 'Drop file(s) here';
+}
+
+.empty-list-content {
+    color: var(--bs-blue);
+    cursor: pointer;
+}
+
+.empty-list-content::after {
+    content: 'Drag & drop or choose PDF file(s) to combine';
 }
