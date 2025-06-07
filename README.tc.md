@@ -4,6 +4,8 @@
 
 一個輕量級的前端 PDF 合併工具，使用 `pdf-lib`、`jQuery` 與 `Bootstrap` 實現多檔 PDF 的預覽、頁面選擇、排序與合併下載。
 
+https://github.com/user-attachments/assets/ff55cdb7-0b68-4b91-8a65-dd8cfb897329
+
 ## 功能
 
 - 多檔案選取與列表顯示（檔名、大小、頁數）
