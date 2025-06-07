@@ -5,6 +5,12 @@
 
 A lightweight client-side PDF merging tool built with `pdf-lib`, `jQuery`, and `Bootstrap`. It supports multi-file selection, custom page range specification, drag-and-drop ordering, and combined PDF download.
 
+
+
+https://github.com/user-attachments/assets/ff55cdb7-0b68-4b91-8a65-dd8cfb897329
+
+
+
 ## Features
 
 - Multi-file selection and listing (filename, size, page count)
