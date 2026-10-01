@@ -6,6 +6,7 @@ class JobItem {
         this.pages = [];        // 0-based 實際頁碼陣列
         this.pageSets = [];     // 使用者輸入的頁碼區間
         this.pagesStr = '';     // 原始輸入字串
+        this.pagesToCombine = 0;       // count number of pages
     }
 
     // 解析並驗證使用者輸入的頁碼字串，回傳是否成功
@@ -17,6 +18,7 @@ class JobItem {
         this.pages = result.pages;
         this.pageSets = result.pageSets;
         this.pagesStr = pagesStr;
+        this.pagesToCombine = result.pagesToCombine; 
         return true;
     }
 
@@ -25,6 +27,7 @@ class JobItem {
         this.pages = [];
         this.pageSets = [];
         this.pagesStr = '';
+        this.pagesToCombine = 0; 
     }
 
     // 複製此實例，僅更換 id
@@ -33,6 +36,7 @@ class JobItem {
         copy.pages = [...this.pages];
         copy.pageSets = this.pageSets.map(set => [...set]);
         copy.pagesStr = this.pagesStr;
+        copy.pagesToCombine = this.pagesToCombine;
         return copy;
     }
 
@@ -54,7 +58,7 @@ class JobItem {
     }
 
     static getPagesInUsed(pagesStr, pageCnt) {
-        let result = { hasError: false, pageSets: [], pages: [] };
+        let result = { hasError: false, pageSets: [], pages: [], pagesToCombine: 0 };
         let PagesTmp = {};
         pagesStr = pagesStr.replace(/[a-zA-Z\s\n]/g, '');
         result.hasError = pagesStr.split(',').some(function(i) {
@@ -69,13 +73,17 @@ class JobItem {
                     PagesTmp[start - 1] = 1;
                 } else {
                     result.pageSets.push([start, end]);
-                    for (let x = start - 1; x < end; x++) PagesTmp[x] = 1;
+                    for (let x = start - 1; x < end; x++){
+                        PagesTmp[x] = 1;
+                        result.pagesToCombine++;
+                    }
                 }
             } else {
                 let num = parseInt(i, 10);
                 if (isNaN(num) || num < 1 || num > pageCnt) return true;
                 result.pageSets.push([num]);
                 PagesTmp[num - 1] = 1;
+                result.pagesToCombine++;
             }
         });
         result.pages = Object.keys(PagesTmp);

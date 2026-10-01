@@ -93,6 +93,7 @@
         if(this.jobItem.hasCustomPages()) {
             this.$badge.show();
             this.$badgeCount.text(this.jobItem.pageSets.length);
+            this.$badgeCount.attr('title', `${this.jobItem.pagesToCombine} page(s)`);
         } else {
             this.$badge.hide();
         }
