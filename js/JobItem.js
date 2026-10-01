@@ -60,6 +60,7 @@ class JobItem {
         result.hasError = pagesStr.split(',').some(function(i) {
             if (i.length < 1) return false;
             if (i.indexOf('-') == 0) return true;
+            if (i.split('-').length > 2) return true;
             if (i.indexOf('-') > 0) {
                 let [start, end] = i.split('-').map(n => parseInt(n, 10));
                 if (isNaN(start) || isNaN(end) || start < 1 || end < 1 || start > pageCnt || end > pageCnt || start > end) return true;
