@@ -62,6 +62,34 @@
     color: var(--bs-blue);
 }
 
+.file-list .page-badge {
+    right: 0px;
+    top: 0px;
+    transform: translate(-50%, -50%);
+}
+
+.file-list .rotation-badge {
+    left: 0px;
+    top: 0px;
+    transform: translate(20%, -50%);
+}
+
+.file-list .rotation-badge .bi {
+    pointer-events: none;
+}
+
+.file-list .file-setting .page-badge, .file-list .file-setting .rotation-badge {
+    display: none;
+}
+
+.file-list .file-setting[has-page="1"] .page-badge {
+    display: initial;
+}
+
+.file-list .file-setting[has-rotation="1"] .rotation-badge {
+    display: initial;
+}
+
 .file-list .bi.bi-arrows-vertical {
     /* position: relative;
     left: calc(50% - 1rem); */
@@ -138,4 +166,230 @@
 
 .empty-list-content::after {
     content: 'Drag & drop or choose PDF file(s) to combine';
+}
+
+.modal-body .toggle-btn {
+    display: inline-block;
+    border: solid 1px rgb(170, 170, 170);
+    /* padding: .5rem 0rem; */
+    margin-left: 1rem;
+    border-radius: .5rem;
+    position: relative;
+    width: 62%;
+    background-color: #cdcdcd;
+    height: 2.2rem;
+    /* padding: 0; */
+}
+
+.modal-body .toggle-btn .floatting-btn {
+    position: absolute;
+    width: calc(100%/3);
+    height: 100%;
+    border: solid 1px rgb(170, 170, 170);
+    border-radius: .5rem;
+    top: 0px;
+    left: 0px;
+    background-color: white;
+    transition: left 500ms ease-out;
+}
+
+.modal-body .toggle-btn .floatting-btn[cur-pos='middle'] {
+    left: calc(100%/3);
+}
+
+.modal-body .toggle-btn .floatting-btn[cur-pos='end'] {
+    left: calc(100% / 3 * 2);
+}
+
+.modal-body .toggle-btn .floatting-btn.begin {
+    left: 0px;
+}
+
+.modal-body .toggle-btn .floatting-btn.middle {
+    left: calc(100%/3);
+}
+
+.modal-body .toggle-btn .floatting-btn.end {
+    left: calc(100% / 3 * 2);
+}
+
+.modal-body .toggle-btn .btn-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    justify-items: center;
+    position: relative;
+    z-index: 1; 
+    user-select: none;
+    align-items: center;
+    height: 100%;
+}
+
+.modal-body .toggle-btn .btn-text span:hover {
+    color: #46a4f7;
+    cursor: pointer;
+}
+
+.modal-body .toggle-btn .btn-text span.active {
+    font-weight: bold;
+}
+
+.modal-body .rotation-setting {
+    display: flex;
+    column-gap: 1rem;
+    align-items: center;
+}
+
+.modal-body .rotation-setting.hidden {
+    display: none;
+}
+
+.modal-body .rotation-setting .rotation-plane {
+    width: 80px;
+    height: 80px;
+    border: gray solid 1px;
+    border-radius: 1rem;
+    position: relative;
+    transition: width 250ms ease-out, height 250ms ease-out;
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator {
+    position: absolute;
+    cursor: pointer;
+    width: 0;
+    height: 0;
+    /* border: gray solid 1px; */
+}
+
+.modal-body .rotation-setting .rotation-plane.vertical-plane {
+    width: 60px;
+}
+
+.modal-body .rotation-setting .rotation-plane.vertical-plane .rotation-indicator:not(.active) {
+    display: none;
+}
+
+.modal-body .rotation-setting .rotation-plane.horizontal-plane {
+    height: 60px;
+}
+
+.modal-body .rotation-setting .rotation-plane.horizontal-plane .rotation-indicator:not(.active) {
+    display: none;
+}
+
+.modal-body .rotation-setting .rotation-plane:hover {
+    width: 80px;
+    height: 80px;
+}
+
+.modal-body .rotation-setting .rotation-plane:hover .rotation-indicator:not(.active) {
+    display: block;
+}
+
+.modal-body .rotation-setting .rotation-indicator.rotation-indicator-up, .modal-body .rotation-setting .rotation-indicator.rotation-indicator-down {
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-up {
+    top: 0;
+    border-top: 15px solid #a7a7a7;    
+}
+
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-down {
+    bottom: 0;
+    border-bottom: 15px solid #a7a7a7;    
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-up:hover {
+    border-top-color: #ee8b3a;    
+}
+
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-down:hover {
+    border-bottom-color: #ee8b3a;    
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-up.active {
+    border-top-color: #2a976a;
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-down.active {
+    border-bottom-color: #2a976a;    
+}
+
+.modal-body .rotation-setting .rotation-indicator.rotation-indicator-left, .modal-body .rotation-setting .rotation-indicator.rotation-indicator-right {
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-left {
+    left: 0;
+    border-left: 15px solid #a7a7a7;   
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-right {
+    right: 0;
+    border-right: 15px solid #a7a7a7;  
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-left:hover {
+    border-left-color: #ee8b3a;    
+}
+
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-right:hover {
+    border-right-color: #ee8b3a;    
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-left.active {
+    border-left-color: #2a976a;    
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator.rotation-indicator-right.active {
+    border-right-color: #2a976a;    
+}
+
+.modal-body .rotation-setting .rotation-plane .rotation-indicator-text-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    user-select: none;
+}
+
+.rotation-indicator-text-container .text-dir {
+    transition: transform 250ms ease-out;
+}
+
+.rotation-indicator.rotation-indicator-up.active ~.rotation-indicator-text-container .text-dir {
+    transform: rotate(0deg);
+}
+.rotation-indicator.rotation-indicator-down.active ~.rotation-indicator-text-container .text-dir {
+    transform: rotate(180deg);
+}
+.rotation-indicator.rotation-indicator-left.active ~.rotation-indicator-text-container .text-dir {
+    transform: rotate(270deg);
+}
+.rotation-indicator.rotation-indicator-right.active ~.rotation-indicator-text-container .text-dir {
+    transform: rotate(90deg);
+}
+
+.rotation-indicator.rotation-indicator-up:hover ~.rotation-indicator-text-container .text-dir {
+    transform: rotate(0deg);
+}
+.rotation-indicator.rotation-indicator-down:hover ~.rotation-indicator-text-container .text-dir {
+    transform: rotate(180deg);
+}
+.rotation-indicator.rotation-indicator-left:hover ~.rotation-indicator-text-container .text-dir {
+    transform: rotate(270deg);
+}
+.rotation-indicator.rotation-indicator-right:hover ~.rotation-indicator-text-container .text-dir {
+    transform: rotate(90deg);
 }

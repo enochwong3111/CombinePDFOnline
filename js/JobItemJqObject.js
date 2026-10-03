@@ -90,12 +90,20 @@
     };
 
     JobItemJqObject.prototype.updateBadge = function() {
+        const $settingParent = this.$settingBtn.parent();
         if(this.jobItem.hasCustomPages()) {
-            this.$badge.show();
+            $settingParent.attr('has-page', 1);
             this.$badgeCount.text(this.jobItem.pageSets.length);
             this.$badgeCount.attr('title', `${this.jobItem.pagesToCombine} page(s)`);
         } else {
-            this.$badge.hide();
+            // this.$badge.hide();
+            $settingParent.attr('has-page', 0);
+        }
+        if (this.jobItem.hasRotationSettings()) {
+            $settingParent.attr('has-rotation', 1);
+        }
+        else {
+            $settingParent.attr('has-rotation', 0);
         }
     };
 

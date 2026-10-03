@@ -7,6 +7,18 @@ class JobItem {
         this.pageSets = [];     // 使用者輸入的頁碼區間
         this.pagesStr = '';     // 原始輸入字串
         this.pagesToCombine = 0;       // count number of pages
+        this.rotation = {       // rotation settings
+            on: false,          // rotation on/off
+            // mode: 'degree',     // rotation mode: degree, WYSIWYG
+            // degree: {           // degree mode
+            //     dir: 'ccw',         // rotate direction
+            //     val: 90          // rotate degree
+            // },
+            // WYSIWYG: {           // WYSIWYG mode
+            //     from: 'up',     // start direction
+            //     to: 'down'      // end direction
+            // }
+        }
     }
 
     // 解析並驗證使用者輸入的頁碼字串，回傳是否成功
@@ -22,12 +34,22 @@ class JobItem {
         return true;
     }
 
+    setRotation(mode, obj) {
+        if (mode) {
+            this.rotation = JSON.parse(JSON.stringify(obj));
+        }
+        else {
+            this.rotation = {};
+        }
+    }
+
     // 重置所有頁面設定
     clearPages() {
         this.pages = [];
         this.pageSets = [];
         this.pagesStr = '';
         this.pagesToCombine = 0; 
+        this.rotation = {on: false};
     }
 
     // 複製此實例，僅更換 id
@@ -37,12 +59,34 @@ class JobItem {
         copy.pageSets = this.pageSets.map(set => [...set]);
         copy.pagesStr = this.pagesStr;
         copy.pagesToCombine = this.pagesToCombine;
+        copy.rotation = JSON.parse(JSON.stringify(this.rotation));
         return copy;
     }
 
     // 是否有自訂頁面
     hasCustomPages() {
         return this.pages.length > 0;
+    }
+
+    hasRotationSettings() {
+        return this.rotation?.on;
+    }
+
+    getRotationDegree() {
+        let degree = 0;
+        const rotation = this.rotation;
+        if (rotation.mode === 'degree') {
+            if (rotation.degree.dir === 'cw') {
+                degree = rotation.degree.val;
+            }
+            else {
+                degree = -rotation.degree.val;
+            }
+        }
+        else {
+            degree = rotation.WYSIWYG.to - rotation.WYSIWYG.from;
+        }
+        return degree;
     }
 
     getPages() {

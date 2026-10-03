@@ -79,10 +79,12 @@
                         <p class="mb-1 page-cnt">Number of pages: <b data-for="pageCnt">xxx</b></p>
                         <!-- <small>And some small print.</small> -->
                     </div>
-                    <div class="col-s align-self-md-center">
-                        <i class="bi bi-gear fs-3" btn-for="setting" data-bs-toggle="modal"
-                            data-bs-target="#modalFileSetting" title="Select pages"></i>
-                        <span class="position-absolute mt-1 translate-middle badge rounded-pill bg-success"
+                    <div class="col-s align-self-md-center position-relative file-setting" has-page="0" has-rotation="0">
+                        <i class="bi bi-gear fs-3" btn-for="setting" data-bs-toggle="modal" data-bs-target="#modalFileSetting" title="Select pages"></i>
+                        <span class="position-absolute mt-1 badge rotation-badge rounded-pill bg-primary">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </span>
+                        <span class="position-absolute mt-1 badge rounded-pill bg-success page-badge"
                             data-for="badge">
                             <span class="comment-count" title="2 pages" data-for="pageUsed">2</span>
                             <span class="visually-hidden">pages</span>
@@ -111,6 +113,47 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="mb-3">
+                        <div>
+                            <label for="rotationInput" class="col-form-label">Rotation:</label>
+                            <div class="toggle-btn">
+                                <div class="floatting-btn"></div>
+                                <div class="btn-text">
+                                    <span btn-pos="begin" class="active">OFF</span>
+                                    <span btn-pos="middle" data-val="degree">Degree</span>
+                                    <span btn-pos="end" data-val="WYSIWYG">WYSIWYG</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rotation-setting rotate-degree mt-2 hidden">
+                            <div class="rotation-direction">
+                                <div class="btn btn-outline-info active" title="Clockwise" data-val="cw"><i class="bi bi-arrow-clockwise"></i></div>
+                                <div class="btn btn-outline-info" title="Counter clockwise" data-val="ccw"><i class="bi bi-arrow-counterclockwise"></i></div>
+                            </div>
+                            <div class="rotation-degree">
+                                <div class="btn btn-outline-primary active" title="rotate 90 degree" data-val="90">90°</div>
+                                <div class="btn btn-outline-primary" title="rotate 180 degree" data-val="180">180°</div>
+                                <div class="btn btn-outline-primary" title="rotate 270 degree" data-val="270">270°</div>
+                            </div>
+                        </div>
+                        <div class="rotation-setting rotate-WYSIWYG mt-2 hidden">
+                            <div class="rotation-plane vertical-plane">
+                                <div class="rotation-indicator rotation-indicator-up active" data-dir="up" data-val="0"></div>
+                                <div class="rotation-indicator rotation-indicator-right" data-dir="right" data-val="90"></div>
+                                <div class="rotation-indicator rotation-indicator-down" data-dir="down" data-val="180"></div>
+                                <div class="rotation-indicator rotation-indicator-left" data-dir="left" data-val="-90"></div>
+                                <div class="rotation-indicator-text-container"><div class="text-dir">A</div></div>
+                            </div>
+                            to
+                            <div class="rotation-plane vertical-plane">
+                                <div class="rotation-indicator rotation-indicator-up active" data-dir="up" data-val="0"></div>
+                                <div class="rotation-indicator rotation-indicator-right" data-dir="right" data-val="90"></div>
+                                <div class="rotation-indicator rotation-indicator-down" data-dir="down" data-val="180"></div>
+                                <div class="rotation-indicator rotation-indicator-left" data-dir="left" data-val="-90"></div>
+                                <div class="rotation-indicator-text-container"><div class="text-dir">A</div></div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label for="pagesInput" class="col-form-label">Page: (e.g. 1, 5-9)</label>
                         <textarea class="form-control" id="pagesInput"></textarea>

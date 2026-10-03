@@ -13,10 +13,18 @@ window.JobItemList = {};
     let fileInput;
     let fileSettingModal;
     let curSettingItemId;
-    let TYPE = {
+    const TYPE = {
         FILE: '_f_',
         ITEM: '_i_'
     }
+    
+    const DIRECTION_MAP = {
+        '0': 'vertical',
+        '90': 'horizontal',
+        '180': 'vertical',
+        '-90': 'horizontal'
+    }
+
     // flag to track pointer over drop-area
     let isOverDropArea = false;
     
@@ -199,8 +207,36 @@ window.JobItemList = {};
             curSettingItemId = $(event.relatedTarget).parents('[data-id]').eq(0).attr('data-id');
             if (jobItems[curSettingItemId].pagesStr) {
                 fileSettingModal.find('#pagesInput').val(jobItems[curSettingItemId].pagesStr);
-            } else {
+            }
+            else {
                 fileSettingModal.find('#pagesInput').val('');
+            }
+            
+            clearRotationSettings();
+            if (jobItems[curSettingItemId].rotation?.on) {
+                const rotationSettings = jobItems[curSettingItemId].rotation;
+                fileSettingModal.find(`.toggle-btn [data-val="${rotationSettings.mode}"]`).addClass('active');
+                if (rotationSettings.mode === 'degree') {
+                    fileSettingModal.find(`.toggle-btn .floatting-btn`).attr('cur-pos', 'middle');
+                    const $setting = fileSettingModal.find('.rotation-setting.rotate-degree');
+                    $setting.removeClass('hidden');
+                    $setting.find(`.rotation-direction .btn[data-val="${rotationSettings.degree.dir}"]`).addClass('active');
+                    $setting.find(`.rotation-degree .btn[data-val="${rotationSettings.degree.val}"]`).addClass('active');
+                    initRotationWYSIWYGSettings();
+                }
+                else {
+                    fileSettingModal.find(`.toggle-btn .floatting-btn`).attr('cur-pos', 'end');
+                    const $setting = fileSettingModal.find('.rotation-setting.rotate-WYSIWYG');
+                    $setting.removeClass('hidden');
+                    $setting.find(`.rotation-plane:nth-child(1)`).addClass(`${DIRECTION_MAP[rotationSettings.WYSIWYG.from]}-plane`);
+                    $setting.find(`.rotation-plane:nth-child(2)`).addClass(`${DIRECTION_MAP[rotationSettings.WYSIWYG.to]}-plane`);
+                    $setting.find(`.rotation-plane:nth-child(1) .rotation-indicator[data-val="${rotationSettings.WYSIWYG.from}"]`).addClass('active');
+                    $setting.find(`.rotation-plane:nth-child(2) .rotation-indicator[data-val="${rotationSettings.WYSIWYG.to}"]`).addClass('active');
+                    initRotationDegreeSettings();
+                }
+            }
+            else {
+                initRotationSettings();
             }
         });
 
@@ -210,11 +246,31 @@ window.JobItemList = {};
             fileSettingModal.find('#pagesInput').val(value);
             let curJobItem = jobItems[curSettingItemId];
             let pageCnt = files[curJobItem.fileId].pageCnt;
+            let rotationMode = fileSettingModal.find('.btn-text .active').data('val');
             try {
                 if (!curJobItem.setPagesStr(value, pageCnt)) {
                     console.error('fail!!');
                     showAlert("Invalid Input!");
                     return;
+                }
+                if (rotationMode) {
+                    const rotationSetting = { on: true, mode: rotationMode };
+                    if (rotationMode === 'degree') {
+                        rotationSetting.degree = {
+                            dir: fileSettingModal.find('.rotation-setting.rotate-degree .rotation-direction .btn.active').data('val'),
+                            val: fileSettingModal.find('.rotation-setting.rotate-degree .rotation-degree .btn.active').data('val')
+                        };
+                    }
+                    else {
+                        rotationSetting.WYSIWYG = {
+                            from: fileSettingModal.find('.rotation-setting.rotate-WYSIWYG .rotation-plane:nth-child(1) .rotation-indicator.active').data('val'),
+                            to: fileSettingModal.find('.rotation-setting.rotate-WYSIWYG .rotation-plane:nth-child(2) .rotation-indicator.active').data('val')
+                        };
+                    }
+                    curJobItem.setRotation(rotationMode, rotationSetting);
+                }
+                else {
+                    curJobItem.setRotation(null, {});
                 }
                 jobItemViews[curSettingItemId].updateBadge();
                 fileSettingModal.find('#pagesInput').val('');
@@ -223,6 +279,40 @@ window.JobItemList = {};
             } catch(error) {
                 console.error('fail!!');
                 showAlert("Unknown Error");
+            }
+        });
+
+        const floatingBtn = fileSettingModal.find('.floatting-btn');
+
+        fileSettingModal.find('.btn-text span[btn-pos]').hover(function() {
+            const position = $(this).attr('btn-pos');
+            floatingBtn.addClass(position);
+        }, function() {
+            floatingBtn.removeClass('begin middle end');
+        });
+
+        fileSettingModal.find('.rotation-setting.rotate-degree .btn, .rotation-setting.rotate-WYSIWYG .rotation-indicator').on('click', function(e) {
+            e.stopPropagation();
+            $(this).parent().find('.active').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        fileSettingModal.find('.rotation-setting.rotate-WYSIWYG .rotation-indicator').on('click', function(e) {
+            e.stopPropagation();
+            const val = $(this).data('val');
+            $(this).parent().removeClass('vertical-plane horizontal-plane').addClass(`${DIRECTION_MAP[val]}-plane`);
+        });
+
+        fileSettingModal.find('.btn-text span[btn-pos]').on('click', function(e) {
+            e.stopPropagation();
+            const position = $(this).attr('btn-pos');
+            const val = $(this).data('val');
+            floatingBtn.attr('cur-pos', position);
+            $(this).parent().find('.active').removeClass('active');
+            $(this).addClass('active');
+            fileSettingModal.find('.rotation-setting').addClass('hidden');
+            if (val) {
+                fileSettingModal.find(`.rotate-${val}`).removeClass('hidden');
             }
         });
 
@@ -293,6 +383,28 @@ window.JobItemList = {};
             }
         }));
         drawItemList();
+    }
+
+    function clearRotationSettings() {
+        fileSettingModal.find('.active').removeClass('active');
+        fileSettingModal.find('.rotation-setting').addClass('hidden');
+        fileSettingModal.find('.rotation-setting .rotation-plane').removeClass('vertical-plane horizontal-plane');
+        fileSettingModal.find('.floatting-btn').attr('cur-pos', '');
+    }
+
+    function initRotationSettings() {
+        fileSettingModal.find('.toggle-btn [btn-pos="begin"]').addClass('active');
+        initRotationDegreeSettings();
+        initRotationWYSIWYGSettings();
+    }
+
+    function initRotationDegreeSettings() {
+        fileSettingModal.find(' .rotation-setting .btn:nth-child(1)').addClass('active');
+    }
+
+    function initRotationWYSIWYGSettings() {
+        fileSettingModal.find('.rotation-plane .rotation-indicator:nth-child(1)').addClass('active');
+        fileSettingModal.find('.rotation-setting .rotation-plane').addClass('vertical-plane');
     }
 
     function drawItemList() {
@@ -388,9 +500,10 @@ window.JobItemList = {};
         let reusablePages = {};
         for (let i in jobItemSeq) {
             let itemId = jobItemSeq[i];
-            let fileId = jobItems[itemId].fileId;
+            const jobItem = jobItems[itemId];
+            let fileId = jobItem.fileId;
             let file = files[fileId];
-            let readPages = jobItems[itemId].getPages();
+            let readPages = jobItem.getPages();
             if (reusablePages[fileId]) {
                 let readPagesTmp = [];
                 let hasAdditionalPages = false;
@@ -406,11 +519,22 @@ window.JobItemList = {};
             } else {
                 reusablePages[fileId] = {};
             }
-            if (!jobItems[itemId].hasCustomPages()) {
+            if (!jobItem.hasCustomPages()) {
                 let srcDoc = await PDFLib.PDFDocument.load(await file.arrayBuffer());
                 let copiedPages = await pdfDoc.copyPages(srcDoc, srcDoc.getPageIndices());
-                copiedPages.forEach((page) => pdfDoc.addPage(page));
-            } else {
+                if (jobItem.hasRotationSettings()) {
+                    const rotateDegree = jobItem.getRotationDegree();
+                    copiedPages.forEach((page) => {
+                        const newPage = pdfDoc.addPage(page);
+                        const angle = newPage.getRotation().angle;
+                        newPage.setRotation(PDFLib.degrees(rotateDegree + angle));
+                    });
+                }
+                else {
+                   copiedPages.forEach((page) => pdfDoc.addPage(page));
+                }
+            }
+            else {
                 if (readPages.length > 0) {
                     let srcDoc = await PDFLib.PDFDocument.load(await file.arrayBuffer());
                     let copiedPages = await pdfDoc.copyPages(srcDoc, readPages);
@@ -419,15 +543,30 @@ window.JobItemList = {};
                         reusablePages[fileId][pageN] = copiedPages[x];
                     }
                 }
-                let pageSets = jobItems[itemId].getPageSets();
+                let pageSets = jobItem.getPageSets();
                 for (let x in pageSets) {
                     let pageSet = pageSets[x];
                     if (pageSet.length > 1) {
-                        for (let k = pageSet[0] - 1; k < pageSet[1]; k++) {
-                            pdfDoc.addPage(reusablePages[fileId][k]);
+                        if (jobItem.hasRotationSettings()) {
+                            const rotateDegree = jobItem.getRotationDegree();
+                            for (let k = pageSet[0] - 1; k < pageSet[1]; k++) {
+                                const newPage = pdfDoc.addPage(reusablePages[fileId][k]);
+                                const angle = newPage.getRotation().angle;
+                                newPage.setRotation(PDFLib.degrees(rotateDegree + angle));
+                            }
+                        }
+                        else {
+                            for (let k = pageSet[0] - 1; k < pageSet[1]; k++) {
+                                pdfDoc.addPage(reusablePages[fileId][k]);
+                            }
                         }
                     } else {
-                        pdfDoc.addPage(reusablePages[fileId][pageSet[0] - 1]);
+                        const newPage = pdfDoc.addPage(reusablePages[fileId][pageSet[0] - 1]);
+                        if (jobItem.hasRotationSettings()) {
+                            const rotateDegree = jobItem.getRotationDegree();
+                            const angle = newPage.getRotation().angle;
+                            newPage.setRotation(PDFLib.degrees(rotateDegree + angle));
+                        }
                     }
                 }
             }
