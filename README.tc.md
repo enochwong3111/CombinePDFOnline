@@ -14,6 +14,7 @@ https://github.com/user-attachments/assets/ff55cdb7-0b68-4b91-8a65-dd8cfb897329
 - 拖放排序合併順序
 - 檔案預覽（內嵌 `iframe`），大檔以提示代替
 - 自訂頁碼範圍合併（例如 `1,3-5`）
+- ❗新功能❗ 自訂頁面旋轉角度
 - 一鍵合併並下載結果
 
 ## 技術棧

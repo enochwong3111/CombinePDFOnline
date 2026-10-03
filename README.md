@@ -19,6 +19,7 @@ https://github.com/user-attachments/assets/ff55cdb7-0b68-4b91-8a65-dd8cfb897329
 - Drag-and-drop ordering of PDF files
 - PDF preview with an embedded iframe; large files display a warning
 - Customizable page range merging (e.g., `1, 3-5`)
+- ❗NEW❗ Customizable page rotation
 - Single-click merging and downloading of the combined PDF
 
 ## Technology Stack
